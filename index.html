@@ -201,7 +201,7 @@ Contacto
 </nav>
 </div>
 <div class="a8 a1d a9 a1e lg:a1f">
-<a href="signin.html" class="
+<a target="_blank" href="https://link.decktra.com/" class="
                   aj
                   md:ah
                   aH a1g a1h
@@ -211,7 +211,7 @@ Contacto
                 ">
 Ingresar
 </a>
-<a href="signup.html" class="
+<a href="#contacto" class="
                   aj
                   md:ah
                   aH
@@ -305,7 +305,7 @@ Simplifica el Registro de tus Nuevos Clientes
 Deja atrás cientos de emails. Crea perfiles de tus nuevos clientes de manera sencilla, rápida y segura
 </p>
 <div class="a8 a9 a1x">
-<a href="#features" class="
+<a href="#contacto" class="
                     aH
                     a2P
                     aI
@@ -321,7 +321,7 @@ Deja atrás cientos de emails. Crea perfiles de tus nuevos clientes de manera se
                   ">
 Registrarse
 </a>
-<a href="#about" class="
+<a target="_blank" href="https://link.decktra.com/" class="
                     aH
                     a2P
                     a1A
@@ -747,7 +747,7 @@ y deleitar a tus clientes
                 fadeInUp
               " data-wow-delay=".15s">
 <div class="ad a9 a1x">
-<img src="images/video/video.jpg" alt="video image" class="a7 a2Q a2R a2S" />
+<img src="images/video/demo_video.png" alt="video image" class="a7 a2Q a2R a2S" />
 <div class="
                     a3
                     a7
@@ -2688,7 +2688,7 @@ Date
 </section> -->
 
 
-<section id="contact" class="a1I[120px] a3A">
+<section id="contacto" class="a1I[120px] a3A">
 <div class="aa">
 <div class="a8 a1K ab[-16px]">
 <div class="a7 lg:a2q/12 ae">
@@ -2718,7 +2718,7 @@ Date
 <p class="a1S aH a1R a2s">
 Envíanos un mensaje y nos pondremos en contacto contigo
 </p>
-<form>
+<form id="my-form" action="https://formspree.io/f/xnqredea" method="POST">
 <div class="a8 a1K ab[-16px]">
 <div class="a7 md:a1_/2 ae">
 <div class="a23">
@@ -2729,7 +2729,7 @@ Envíanos un mensaje y nos pondremos en contacto contigo
                         ">
 Tu nombre
 </label>
-<input type="text" placeholder="Ingresa tu nombre" class="
+<input type="text" name="name" placeholder="Ingresa tu nombre" class="
                           a7 a3l a3m
                           dark:a3w[#242B51]
                           a13 a33
@@ -2754,7 +2754,7 @@ Tu nombre
                         ">
 Tu Email
 </label>
-<input type="email" placeholder="Ingresa tu email" class="
+<input type="email" name="email" placeholder="Ingresa tu email" class="
                           a7 a3l a3m
                           dark:a3w[#242B51]
                           a13 a33
@@ -2797,21 +2797,27 @@ Tu mensaje
 </div>
 </div>
 <div class="a7 ae">
-<a href="javascript:void(0)" class="
-                        aH
-                        a1R
-                        aI
-                        a1k
-                        a3q
-                        a1m
-                        hover:a2i hover:a1n
-                        a13
-                        a1p
-                        a1a
-                        a2j
-                      ">
+<button id="my-form-button" class="
+                                aH
+                                a1R
+                                aI
+                                a1k
+                                a3q
+                                a1m
+                                hover:a2i hover:a1n
+                                a13
+                                a1p
+                                a1a
+                                a2j
+                                ">
 Enviar
-</a>
+</button>
+<br><br>
+<p id="my-form-status" class="
+ah a1b a1R a1h
+dark:aI
+a30
+"></p>
 </div>
 </div>
 </form>
@@ -3302,12 +3308,12 @@ About
       // ==== pricing plan toggler
       let togglePlan = document.querySelector("#togglePlan");
 
-      document.querySelector(".monthly").addEventListener("click", () => {
-        togglePlan.checked = false;
-      });
-      document.querySelector(".yearly").addEventListener("click", () => {
-        togglePlan.checked = true;
-      });
+      // document.querySelector(".monthly").addEventListener("click", () => {
+      //   togglePlan.checked = false;
+      // });
+      // document.querySelector(".yearly").addEventListener("click", () => {
+      //   togglePlan.checked = true;
+      // });
 
       // ==== for menu scroll
       const pageLink = document.querySelectorAll(".menu-scroll");
@@ -3351,12 +3357,43 @@ About
 
       //========= glightbox
       GLightbox({
-        href: "https://www.youtube.com/watch?v=r44RKWyfcFw&fbclid=IwAR21beSJORalzmzokxDRcGfkZA1AtRTE__l5N4r09HcGS5Y6vOluyouM9EM",
+        href: "https://youtu.be/T3wH1QULa0A",
         type: "video",
         source: "youtube", //vimeo, youtube or local
         width: 900,
         autoplayVideos: true,
       });
+
+      var form = document.getElementById("my-form");
+
+      async function handleSubmit(event) {
+        event.preventDefault();
+        var status = document.getElementById("my-form-status");
+        var data = new FormData(event.target);
+        fetch(event.target.action, {
+          method: form.method,
+          body: data,
+          headers: {
+              'Accept': 'application/json'
+          }
+        }).then(response => {
+          if (response.ok) {
+            status.innerHTML = "¡Gracias por tu mensaje! Pronto te contactaremos";
+            form.reset()
+          } else {
+            response.json().then(data => {
+              if (Object.hasOwn(data, 'errors')) {
+                status.innerHTML = data["errors"].map(error => error["message"]).join(", ")
+              } else {
+                status.innerHTML = "¡Uy! Hubo un problema al enviar tu mensaje"
+              }
+            })
+          }
+        }).catch(error => {
+          status.innerHTML = "¡Uy! Hubo un problema al enviar tu mensaje"
+        });
+      }
+      form.addEventListener("submit", handleSubmit)
     </script>
 </body>
 </html>
